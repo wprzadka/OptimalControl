@@ -20,8 +20,9 @@ class Simulation:
         self.clock.tick(30)
 
         self.window.fill(self.BACKGROUND)
-        x, v, alpha, w = self.pendulum.state
-        pg.draw.rect(self.window, (255, 128, 255), pg.Rect(x, 100, 60, 60))
+        # x, v, alpha, w = self.pendulum.state
+        # pg.draw.rect(self.window, (255, 128, 255), pg.Rect(x, 100, 60, 60))
+        self.pendulum.render(self.window)
         pg.display.update()
 
         self.read_input()
