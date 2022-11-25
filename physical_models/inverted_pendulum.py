@@ -104,3 +104,13 @@ class InvertedPendulum(PhysicalModelBase):
         end_pos = np.array([x, self.y_pos]) + np.array([np.sin(alpha), np.cos(alpha)]) * self.length
         pg.draw.line(window, color=(120, 50, 50), start_pos=pos, end_pos=end_pos)
         pg.draw.circle(window, color=(0, 120, 255), center=end_pos, radius=4)
+
+    def get_input(self):
+        # provide inputs for pendulum
+        pressed = pg.key.get_pressed()
+        action = np.array([0])
+        if pressed[pg.K_LEFT]:
+            action = np.array([-1.])
+        elif pressed[pg.K_RIGHT]:
+            action = np.array([1.])
+        return action

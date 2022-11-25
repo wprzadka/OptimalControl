@@ -14,3 +14,6 @@ class PhysicalModelBase:
 
     def render(self, window):
         pass
+
+    def get_input(self) -> np.ndarray:
+        pass
