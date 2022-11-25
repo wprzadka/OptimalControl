@@ -4,13 +4,13 @@ import pygame as pg
 
 class Simulation:
 
-    def __init__(self, pendulum):
+    def __init__(self, physical_model):
         self.RESOLUTION = (640, 480)
         self.BACKGROUND = (20, 40, 60)
 
         self.is_running = True
-        self.delta_time = 1.
-        self.pendulum = pendulum
+        self.delta_time = 0.1
+        self.physical_model = physical_model
 
         pg.init()
         self.window = pg.display.set_mode(self.RESOLUTION)
@@ -22,7 +22,7 @@ class Simulation:
         self.window.fill(self.BACKGROUND)
         # x, v, alpha, w = self.pendulum.state
         # pg.draw.rect(self.window, (255, 128, 255), pg.Rect(x, 100, 60, 60))
-        self.pendulum.render(self.window)
+        self.physical_model.render(self.window)
         pg.display.update()
 
         self.read_input()
@@ -35,12 +35,6 @@ class Simulation:
             elif event.type == pg.QUIT:
                 self.is_running = False
 
-        # provide inputs for pendulum
-        pressed = pg.key.get_pressed()
-        action = np.array([0])
-        if pressed[pg.K_LEFT]:
-            action = np.array([-1.])
-        elif pressed[pg.K_RIGHT]:
-            action = np.array([1.])
+        action = self.physical_model.get_input()
 
-        self.pendulum.update(action, self.delta_time)
+        self.physical_model.update(action, self.delta_time)
