@@ -1,6 +1,5 @@
-import pygame as pg
 from simulation import Simulation
-from inverted_pendulum import InvertedPendulum
+from physical_models.inverted_pendulum import InvertedPendulum
 
 if __name__ == '__main__':
 
