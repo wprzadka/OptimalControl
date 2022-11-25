@@ -8,7 +8,7 @@ class Seeker(PhysicalModelBase):
 
     def __init__(self):
         #                      x, y, \alpha
-        self.state = np.array([0., 0., 0.])
+        self.state = np.array([200., 200., 0.])
 
         self.A_mat = np.array([
             # x y \alpha
@@ -30,17 +30,18 @@ class Seeker(PhysicalModelBase):
         sin = np.sin(alpha)
         cos = np.cos(alpha)
         rotation_matrix = np.array([
-            [sin, cos],
-            [cos, -sin]
+            [cos, sin],
+            [-sin, cos]
         ])
         return np.array([rotation_matrix @ p for p in points])
 
     def render(self, window):
-        points = np.array([[0, 1], [-1, -1], [1, -1]])
-        x, alpha = self.state[[0, 2]]
+        points = np.array([[0, 1], [-1, -1], [0, -0.7], [1, -1]]) * 20
+        x, y, alpha = self.state
 
-        points = x + self.apply_rotation(points, alpha)
-        pg.draw.polygon(window, color=(120, 50, 50), points=points)
+        center = np.array([x, y])
+        points = center + self.apply_rotation(points, alpha)
+        pg.draw.polygon(window, color=(50, 120, 50), points=points)
 
     def get_input(self):
         pressed = pg.key.get_pressed()
