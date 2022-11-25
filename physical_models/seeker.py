@@ -6,7 +6,11 @@ from physical_models.physical_model_base import PhysicalModelBase
 
 class Seeker(PhysicalModelBase):
 
-    def __init__(self):
+    def __init__(
+            self,
+            velocity: float
+    ):
+        self.velocity = velocity
         #                      x, y, \alpha
         self.state = np.array([200., 200., 0.])
 
@@ -17,14 +21,27 @@ class Seeker(PhysicalModelBase):
             [0., 0., 0.]   # \alpha
         ])
 
-        self.B_mat = np.array([
-            # v, \omega
-            [0., 0.],  # x
-            [0., 0.],  # y
-            [0., 1.]   # \alpha
-        ])
+        # self.B_mat = np.array([
+        #     # v, \omega
+        #     [0., 0.],  # x
+        #     [0., 0.],  # y
+        #     [0., 1.]   # \alpha
+        # ])
 
         self.action_space = np.array([[-1., 1.], [-np.pi / 4, np.pi / 4]])
+
+    def A(self):
+        return self.A_mat
+
+    def B(self):
+        _, _, alpha = self.state
+        B_mat = np.array([
+            # v, \omega
+            [np.sin(alpha) * self.velocity, 0.],  # x
+            [np.cos(alpha) * self.velocity, 0.],  # y
+            [0.,            1.]   # \alpha
+        ])
+        return B_mat
 
     def apply_rotation(self, points: np.ndarray, alpha: float) -> np.ndarray:
         sin = np.sin(alpha)

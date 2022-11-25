@@ -4,11 +4,9 @@ import numpy as np
 class PhysicalModelBase:
 
     state = None
-    A_mat = None
-    B_mat = None
 
     def update(self, action: np.ndarray, dt: float) -> np.ndarray:
-        state_derivative = self.A_mat @ self.state + self.B_mat @ action
+        state_derivative = self.A() @ self.state + self.B() @ action
         self.state += state_derivative * dt
         return self.state
 
@@ -16,4 +14,10 @@ class PhysicalModelBase:
         pass
 
     def get_input(self) -> np.ndarray:
+        pass
+
+    def A(self) -> np.ndarray:
+        pass
+
+    def B(self) -> np.ndarray:
         pass
