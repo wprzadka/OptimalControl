@@ -1,8 +1,10 @@
 import numpy as np
 import pygame as pg
 
+from physical_models.physical_model_base import PhysicalModelBase
 
-class InvertedPendulum:
+
+class InvertedPendulum(PhysicalModelBase):
 
     def __init__(self):
         self.length = 100.
