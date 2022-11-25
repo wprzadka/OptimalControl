@@ -36,7 +36,7 @@ class Seeker(PhysicalModelBase):
         return np.array([rotation_matrix @ p for p in points])
 
     def render(self, window):
-        points = np.array([[0, 2], [-1, 0], [1, 0]])
+        points = np.array([[0, 1], [-1, -1], [1, -1]])
         x, alpha = self.state[[0, 2]]
 
         points = x + self.apply_rotation(points, alpha)
