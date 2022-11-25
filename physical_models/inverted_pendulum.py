@@ -27,7 +27,7 @@ class InvertedPendulum(PhysicalModelBase):
         ])
         self.B_mat = np.array([[0.], [1. / self.m_card], [0.], [1. / (self.m_card * self.length)]])
         # a[m/s²]
-        self.action_space = (-1., 1.)
+        self.action_space = np.array([[-1., 1.]])
 
         # self.body_definition = {
         #     0: (100, 50),
