@@ -1,8 +1,8 @@
 import numpy as np
 
-from control_algoriithms.costs_weights import CostWeights
-from control_algoriithms.linear_quadratic_regulator import LinearQuadraticRegulator
-from control_algoriithms.pid import PID
+from control_algorithms.costs_weights import CostWeights
+from control_algorithms.linear_quadratic_regulator import LinearQuadraticRegulator
+from control_algorithms.pid import PID
 from physical_models.rocker_railroad_car import RocketRailroadCar
 from simulation import Simulation
 from physical_models.inverted_pendulum import InvertedPendulum
