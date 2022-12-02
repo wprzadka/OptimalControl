@@ -1,16 +1,20 @@
 import numpy as np
 import pygame as pg
 
+from physical_models.physical_model_base import PhysicalModelBase
+
 
 class Simulation:
 
-    def __init__(self, physical_model):
+    def __init__(self, physical_model: PhysicalModelBase, control_model = None):
         self.RESOLUTION = (640, 480)
         self.BACKGROUND = (20, 40, 60)
 
         self.is_running = True
         self.delta_time = 0.1
         self.physical_model = physical_model
+
+        self.control = control_model
 
         pg.init()
         self.window = pg.display.set_mode(self.RESOLUTION)
@@ -35,6 +39,9 @@ class Simulation:
             elif event.type == pg.QUIT:
                 self.is_running = False
 
-        action = self.physical_model.get_input()
+        if self.control is None:
+            action = self.physical_model.get_input()
+        else:
+            action = self.control(self.physical_model.state, self.delta_time)
 
         self.physical_model.update(action, self.delta_time)
