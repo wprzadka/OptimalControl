@@ -7,8 +7,9 @@ from physical_models.physical_model_base import PhysicalModelBase
 class RocketRailroadCar(PhysicalModelBase):
 
     def __init__(self, velocity):
-        self.state = np.array([100., 0.])
         self.velocity = velocity
+        self.state = np.array([100., 0.])
+        self.target = np.zeros_like(self.state)
 
         self.A_mat = np.array([
             # x v
@@ -22,6 +23,8 @@ class RocketRailroadCar(PhysicalModelBase):
         ])
         self.action_space = np.array([[-1., 1.]])
 
+    def set_target(self, target_state: np.ndarray):
+        self.target = target_state
 
     def A(self):
         return self.A_mat
@@ -41,7 +44,7 @@ class RocketRailroadCar(PhysicalModelBase):
         flame = center + np.sign(v) * np.array([[1, 0], [-1, -1], [-0.7, 0], [-1, 1]]) * 5
         pg.draw.polygon(window, color=(255, 20, 50), points=flame)
 
-        pg.draw.circle(window, center=np.array([500, 200]), radius=8, color=(0, 50, 160))
+        pg.draw.circle(window, center=self.target, radius=8, color=(0, 50, 160))
 
 
 

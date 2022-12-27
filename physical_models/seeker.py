@@ -13,6 +13,7 @@ class Seeker(PhysicalModelBase):
         self.velocity = velocity
         #                      x, y, \alpha
         self.state = np.array([200., 200., 0.])
+        self.target = np.zeros_like(self.state)
 
         self.A_mat = np.array([
             # x y \alpha
@@ -29,6 +30,9 @@ class Seeker(PhysicalModelBase):
         # ])
 
         self.action_space = np.array([[-1., 1.], [-np.pi / 4, np.pi / 4]])
+
+    def set_target(self, target_state: np.ndarray):
+        self.target = target_state
 
     def A(self):
         return self.A_mat
@@ -59,6 +63,10 @@ class Seeker(PhysicalModelBase):
         center = np.array([x, y])
         points = center + self.apply_rotation(points, alpha)
         pg.draw.polygon(window, color=(50, 120, 50), points=points)
+
+        pg.draw.circle(window, center=self.target[:2], radius=8, color=(0, 50, 160))
+        direction = np.array([np.sin(self.target[-1]), np.cos(self.target[-1])]) * 20
+        pg.draw.line(window, (0, 160, 50), self.target[:2], self.target[:2] + direction)
 
     def get_input(self):
         pressed = pg.key.get_pressed()

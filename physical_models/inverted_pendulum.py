@@ -15,6 +15,7 @@ class InvertedPendulum(PhysicalModelBase):
 
         # x[m], v[m/s], α[rad], ω[rad/s]
         self.state = np.array([200., 0., 0., 0.])
+        self.target = np.zeros_like(self.state)
 
         h1 = -self.m_pendulum * self.gravity / self.m_card
         h2 = (self.m_card + self.m_pendulum) * self.gravity / (self.m_card * self.length)
@@ -33,6 +34,9 @@ class InvertedPendulum(PhysicalModelBase):
         #     0: (100, 50),
         #     2: (5)
         # }
+
+    def set_target(self, target_state: np.ndarray):
+        self.target = target_state
 
     def update(self, action: np.ndarray, dt: float) -> np.ndarray:
         # state_derivative = self.A() @ self.state + self.B() @ action
