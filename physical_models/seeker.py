@@ -15,29 +15,12 @@ class Seeker(PhysicalModelBase):
         self.state = np.array([200., 200., 0.])
         self.target = np.zeros_like(self.state)
 
-        self.A_mat = np.array([
-            # x y \alpha
-            [0., 0., 0.],  # x
-            [0., 0., 0.],  # y
-            [0., 0., 0.]   # \alpha
-        ])
-
-        # self.B_mat = np.array([
-        #     # v, \omega
-        #     [0., 0.],  # x
-        #     [0., 0.],  # y
-        #     [0., 1.]   # \alpha
-        # ])
-
         self.action_space = np.array([[-1., 1.], [-np.pi / 4, np.pi / 4]])
 
     def set_target(self, target_state: np.ndarray):
         self.target = target_state
 
-    def A(self):
-        return self.A_mat
-
-    def B(self):
+    def f(self, action):
         _, _, alpha = self.state
         B_mat = np.array([
             # v, \omega
@@ -45,7 +28,7 @@ class Seeker(PhysicalModelBase):
             [np.cos(alpha) * self.velocity, 0.],  # y
             [0.,            1.]   # \alpha
         ])
-        return B_mat
+        return B_mat @ action
 
     def apply_rotation(self, points: np.ndarray, alpha: float) -> np.ndarray:
         sin = np.sin(alpha)

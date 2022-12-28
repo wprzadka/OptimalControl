@@ -1,10 +1,10 @@
 import numpy as np
 import pygame as pg
 
-from physical_models.physical_model_base import PhysicalModelBase
+from physical_models.physical_model_base_linear import PhysicalModelBaseLinear
 
 
-class RocketRailroadCar(PhysicalModelBase):
+class RocketRailroadCar(PhysicalModelBaseLinear):
 
     def __init__(self, velocity):
         self.velocity = velocity

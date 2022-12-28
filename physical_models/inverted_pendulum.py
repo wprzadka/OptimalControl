@@ -30,11 +30,6 @@ class InvertedPendulum(PhysicalModelBase):
         # a[m/s²]
         self.action_space = np.array([[-1., 1.]])
 
-        # self.body_definition = {
-        #     0: (100, 50),
-        #     2: (5)
-        # }
-
     def set_target(self, target_state: np.ndarray):
         self.target = target_state
 
@@ -44,6 +39,11 @@ class InvertedPendulum(PhysicalModelBase):
         # state_derivative = self.f(action[0])
         self.state += state_derivative * dt
         return self.state
+
+    def f(self, action: np.ndarray):
+        # TODO fix the mechanics (no need for linearization)
+        return self.A() @ self.state + self.B() @ action
+
 
     def A(self):
         x, v, alpha, omega = self.state
