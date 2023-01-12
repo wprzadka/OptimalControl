@@ -29,7 +29,13 @@ class Simulation:
         self.physical_model.render(self.window)
         pg.display.update()
 
-        self.read_input()
+        if self.control is None:
+            action = self.read_input()
+        else:
+            action = self.control(self.physical_model.state, self.delta_time)
+
+        self.physical_model.update(action, self.delta_time)
+
 
     def read_input(self):
         for event in pg.event.get():
@@ -38,10 +44,5 @@ class Simulation:
                     self.is_running = False
             elif event.type == pg.QUIT:
                 self.is_running = False
-
-        if self.control is None:
             action = self.physical_model.get_input()
-        else:
-            action = self.control(self.physical_model.state, self.delta_time)
-
-        self.physical_model.update(action, self.delta_time)
+        return action
