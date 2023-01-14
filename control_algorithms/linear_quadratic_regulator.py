@@ -21,11 +21,10 @@ class LinearQuadraticRegulator:
 
         self.cost_weights = cost_weights
         self.target_state = np.zeros_like(model.state)
-        self.state_cost = cost_weights.state_cost * np.eye(model.state.shape[0])
-        self.control_cost = cost_weights.control_cost * np.eye(model.action_space.shape[0])
-        # self.control_cost = np.diag(np.full_like(model.state, fill_value=cost_weights.control_cost))
-        self.end_state_cost = cost_weights.end_state_cost * np.eye(model.state.shape[0])
-        # self.end_state_cost = np.diag(np.full_like(model.state, fill_value=cost_weights.end_state_cost))
+
+        self.state_cost = cost_weights.state_cost
+        self.control_cost = cost_weights.control_cost
+        self.end_state_cost = cost_weights.end_state_cost
 
     def __call__(self, state: np.ndarray, dt: float):
         return self.compute_action(state, dt)

@@ -44,9 +44,7 @@ class RocketRailroadCar(PhysicalModelBaseLinear):
         flame = center + np.sign(v) * np.array([[1, 0], [-1, -1], [-0.7, 0], [-1, 1]]) * 5
         pg.draw.polygon(window, color=(255, 20, 50), points=flame)
 
-        pg.draw.circle(window, center=self.target, radius=8, color=(0, 50, 160))
-
-
+        pg.draw.circle(window, center=self.target + np.array([0, y]), radius=8, color=(0, 50, 160))
 
     def get_input(self):
         pressed = pg.key.get_pressed()

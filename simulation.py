@@ -6,12 +6,12 @@ from physical_models.physical_model_base import PhysicalModelBase
 
 class Simulation:
 
-    def __init__(self, physical_model: PhysicalModelBase, control_model = None):
+    def __init__(self, physical_model: PhysicalModelBase, control_model = None, delta_time: float = 0.1):
         self.RESOLUTION = (640, 480)
         self.BACKGROUND = (20, 40, 60)
 
         self.is_running = True
-        self.delta_time = 0.1
+        self.delta_time = delta_time
         self.physical_model = physical_model
 
         self.control = control_model
@@ -44,5 +44,5 @@ class Simulation:
                     self.is_running = False
             elif event.type == pg.QUIT:
                 self.is_running = False
-            action = self.physical_model.get_input()
+        action = self.physical_model.get_input()
         return action

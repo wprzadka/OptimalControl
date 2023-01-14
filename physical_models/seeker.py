@@ -2,6 +2,7 @@ import numpy as np
 import pygame as pg
 
 from physical_models.physical_model_base import PhysicalModelBase
+from utils.render_utils import apply_rotation
 
 
 class Seeker(PhysicalModelBase):
@@ -30,21 +31,12 @@ class Seeker(PhysicalModelBase):
         ])
         return B_mat @ action
 
-    def apply_rotation(self, points: np.ndarray, alpha: float) -> np.ndarray:
-        sin = np.sin(alpha)
-        cos = np.cos(alpha)
-        rotation_matrix = np.array([
-            [cos, sin],
-            [-sin, cos]
-        ])
-        return np.array([rotation_matrix @ p for p in points])
-
     def render(self, window):
         points = np.array([[0, 1], [-1, -1], [0, -0.7], [1, -1]]) * 20
         x, y, alpha = self.state
 
         center = np.array([x, y])
-        points = center + self.apply_rotation(points, alpha)
+        points = center + apply_rotation(points, alpha)
         pg.draw.polygon(window, color=(50, 120, 50), points=points)
 
         pg.draw.circle(window, center=self.target[:2], radius=8, color=(0, 50, 160))
