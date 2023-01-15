@@ -14,8 +14,7 @@ $$
 \begin{bmatrix} 
     0 & 1 \\ 
     0 & 0 
-\end{bmatrix} x(t) 
-+ \begin{bmatrix} 
+\end{bmatrix} x(t) + \begin{bmatrix} 
     0 \\ 1 
 \end{bmatrix} u(t)
 $$
