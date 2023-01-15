@@ -77,15 +77,13 @@ class LinearQuadraticRegulator:
     def compute_linearized_B(self, model, action, du, dt):
         B = np.empty(shape=(model.state.shape[0], action.shape[0]))
         for idx, _ in enumerate(action):
-            model_copy = deepcopy(model)
             action_copy = action.copy()
             action_copy[idx] += du
-            forward = model.state + model_copy.f(action_copy) * dt
+            forward = model.state + model.f(action_copy) * dt
 
-            model_copy = deepcopy(model)
             action_copy = action.copy()
             action_copy[idx] -= du
-            backward = model.state + model_copy.f(action_copy) * dt
+            backward = model.state + model.f(action_copy) * dt
 
             B[:, idx] = (forward - backward) / (2 * du)
         return B
@@ -101,9 +99,10 @@ class LinearQuadraticRegulator:
         B = self.compute_linearized_B(model, u_star, 0.00001, self.dt)
 
         for t in range(len(K_vals) - 1, 0, -1):
-            # A = self.compute_linearized_A(model, u_star, 0.1, self.dt)
-            # B = self.compute_linearized_B(model, u_star, 0.1, self.dt)
+            # A = self.compute_linearized_A(model, u_star, 0.00001, self.dt)
+            # B = self.compute_linearized_B(model, u_star, 0.00001, self.dt)
             # u_star = inv_control_cost @ B.T @ K_vals[t] @ (state - self.target_state)
+            # u_star = np.clip(u_star, self.model.action_space[:, 0], self.model.action_space[:, 1])
 
             K_vals[t - 1] = K_vals[t] + self.dt * (
                     K_vals[t] @ B @ inv_control_cost @ B.T @ K_vals[t]
