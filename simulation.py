@@ -32,7 +32,7 @@ class Simulation:
         if self.control is None:
             action = self.read_input()
         else:
-            action = self.control(self.physical_model.state, self.delta_time)
+            action = self.control(self.physical_model.state)
 
         self.physical_model.update(action, self.delta_time)
 
