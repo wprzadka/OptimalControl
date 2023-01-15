@@ -8,30 +8,16 @@ from utils.render_utils import apply_rotation
 
 class TwoLinkArm(PhysicalModelBase):
 
-    def __init__(self, angular_velocity: float):
+    def __init__(self, angular_velocity: float, arms_lengths: np.ndarray = None):
         self.angular_velocity = angular_velocity
-        self.lengths = np.array([100., 100.])
+        self.lengths = arms_lengths or np.array([50., 50.])
 
-        #                      x1,   y1,   x2,   y2
-        # self.state = np.array([100., 0., 200., 0.])
-
-        angles = np.array([np.pi / 4, np.pi / 2])
-        positions = self.compute_positions_from_angles(angles).flatten()
-        print(angles, positions)
-        self.hidden_state = np.concatenate((angles, positions))
-        self._state = self.hidden_state[-2:]
-        self.target = self.state + np.array([10., 0])
+        angles = np.array([np.pi / 4, -np.pi / 4])
+        self.state = self.compute_positions_from_angles(angles).flatten()
+        target_angles = np.array([np.pi / 8, np.pi / 2])
+        self.target = self.compute_positions_from_angles(target_angles).flatten()
 
         self.action_space = np.array([[-1., 1.], [-1., 1.]])
-
-    @property
-    def state(self):
-        return self._state
-
-    @state.setter
-    def state(self, value):
-
-        self._state = value
 
     def set_target(self, target_state: np.ndarray):
         self.target = target_state
@@ -44,26 +30,31 @@ class TwoLinkArm(PhysicalModelBase):
         x2 = apply_rotation(np.array([[l2, 0]]), th1 + th2)[0] + x1
         return np.array([x1, x2])
 
+    def compute_angles_from_positions(self, positions: np.ndarray):
+        x1, x2 = positions
+        diff = x2 - x1
+        th1 = np.arctan2(x1[1], x1[0])
+        th2 = np.arctan2(diff[1], diff[0]) - th1
+        return np.array([th1, th2])
+
     def f(self, action):
         l1, l2 = self.lengths
-        th1, th2 = self.hidden_state[:2]
+        th1, th2 = self.compute_angles_from_positions(self.state.reshape(-1, 2))
 
         derivatives = np.array([
+            [-l1 * np.sin(th1), 0],
+            [l1 * np.cos(th1), 0],
             [-l1 * np.sin(th1) - l2 * np.sin(th1 + th2), -l2 * np.sin(th1 + th2)],
             [l1 * np.cos(th1) + l2 * np.cos(th1 + th2), l2 * np.cos(th1 + th2)]
         ])
-
-        angles = self.hidden_state[:2] + self.angular_velocity * action
-        self.hidden_state[:2] = (angles % (2*np.pi)) - np.where(angles < 0, 2 * np.pi, 0)
-        self.hidden_state[2:] = self.compute_positions_from_angles(self.hidden_state[:2]).flatten()
         return derivatives @ action
 
     def render(self, window):
         center = np.array([300, 300])
-        x1, x2 = self.compute_positions_from_angles(self.hidden_state[:2]) + center
+        x1 = self.state[:2] + center
+        x2 = self.state[2:] + center
 
-        pg.draw.circle(window, (200, 20, 20), self.target + center, 4)
-
+        pg.draw.circle(window, (200, 20, 20), self.target[2:] + center, 4)
         pg.draw.line(window, (0, 160, 50), center, x1)
         pg.draw.line(window, (0, 160, 50), x1, x2)
         for point in [center, x1, x2]:
@@ -73,13 +64,13 @@ class TwoLinkArm(PhysicalModelBase):
         pressed = pg.key.get_pressed()
         action = np.array([0, 0])
 
-        # get movement speed
+        # 1st motor rotation speed
         if pressed[pg.K_q]:
             action[0] = 1.
         elif pressed[pg.K_a]:
             action[0] = -1.
 
-        # get rotation speed
+        # 2nd motor rotation speed
         if pressed[pg.K_w]:
             action[1] = 1.
         elif pressed[pg.K_s]:
