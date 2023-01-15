@@ -35,13 +35,6 @@ class TwoLinkArmIk(PhysicalModelBaseLinear):
         x2 = apply_rotation(np.array([[l2, 0]]), th1 + th2)[0] + x1
         return np.array([x1, x2])
 
-    def compute_angles_from_positions(self, positions: np.ndarray):
-        x1, x2 = positions
-        l1, l2 = self.lengths
-        th1 = np.arccos(x1[0] / l1)
-        th2 = np.arccos((x2[0] - x1[0]) / l2) - th1
-        return np.array([th1, th2])
-
     def A(self):
         return np.array([
         #    θ1 θ2 ω1 ω2
@@ -74,13 +67,13 @@ class TwoLinkArmIk(PhysicalModelBaseLinear):
         pressed = pg.key.get_pressed()
         action = np.array([0, 0])
 
-        # get movement speed
+        # 1st motor torque
         if pressed[pg.K_q]:
             action[0] = 1.
         elif pressed[pg.K_a]:
             action[0] = -1.
 
-        # get rotation speed
+        # 2nd motor torque
         if pressed[pg.K_w]:
             action[1] = 1.
         elif pressed[pg.K_s]:
