@@ -9,9 +9,11 @@ class Seeker(PhysicalModelBase):
 
     def __init__(
             self,
-            velocity: float
+            velocity: float,
+            angular_velocity: float
     ):
         self.velocity = velocity
+        self.angular_velocity = angular_velocity
         #                      x, y, \alpha
         self.state = np.array([200., 200., 0.])
         self.target = np.zeros_like(self.state)
@@ -27,7 +29,7 @@ class Seeker(PhysicalModelBase):
             # v, \omega
             [np.sin(alpha) * self.velocity, 0.],  # x
             [np.cos(alpha) * self.velocity, 0.],  # y
-            [0.,            1.]   # \alpha
+            [0.,            self.angular_velocity]   # \alpha
         ])
         return B_mat @ action
 
