@@ -4,8 +4,10 @@
 
 $$
 x = \begin{bmatrix}
-    \hat{x}, v
+    p & \dot{p}
 \end{bmatrix}^{T}
+\qquad
+u = \ddot{p}
 $$
 
 
@@ -27,21 +29,25 @@ x =
 \begin{bmatrix}
     \hat{x}, \hat{y}, \alpha
 \end{bmatrix}^{T}
+\qquad
+u = \begin{bmatrix}
+    v, \omega
+\end{bmatrix}^{T}
 $$
 
 $$
 \dot{x}(t) = 
 \begin{bmatrix} 
-    v \sin(\alpha) & 0 \\
-    v \cos(\alpha) & 0 \\
-    0              & \omega
+    \sin(\alpha) & 0 \\
+    \cos(\alpha) & 0 \\
+    0            & 1
 \end{bmatrix} 
 u(t)
 $$
 
 ,where
 $v \in \mathbb{R}$ is a velocity and
-$\omega \in \mathbb{R}$ is an angular velocity
+$\omega = \dot{\alpha} \in \mathbb{R}$ is an angular velocity
 
 3. Two link arm (position based - kinematic control)
 
@@ -49,7 +55,11 @@ $$
 x = 
 \begin{bmatrix}
     x_1, y_1, x_2, y_2
-\end{bmatrix}
+\end{bmatrix}^{T}
+\qquad
+u = \begin{bmatrix}
+    \dot{\theta}_1, \dot{\theta}_2
+\end{bmatrix}^{T}
 $$
 
 $$
@@ -68,7 +78,11 @@ $$
 $$
 x = \begin{bmatrix}
     \theta_1, \dot{\theta}_1, \theta_2, \dot{\theta}_2
-\end{bmatrix}
+\end{bmatrix}^{T}
+\qquad
+u = \begin{bmatrix}
+    \ddot{\theta}_1, \ddot{\theta}_2
+\end{bmatrix}^{T}
 $$
 
 $$
