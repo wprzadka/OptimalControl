@@ -52,7 +52,12 @@ $$
 $v \in \mathbb{R}$ is a velocity and
 $\omega = \dot{\alpha} \in \mathbb{R}$ is an angular velocity
 
-3. Two link arm (position based - kinematic control)
+3. Two link arm
+
+<img src="figures/two-link-arm.svg" width="50%" height="50%">
+![two-link-arm figure](figures/two-link-arm.svg)
+
+3a. Two link arm (position based - kinematic control)
 
 $$
 x = 
@@ -76,7 +81,7 @@ $$
 u(t)
 $$
 
-4. Two link arm (angle based - dynamic control)
+3b. Two link arm (angle based - dynamic control)
 
 $$
 x = \begin{bmatrix}
