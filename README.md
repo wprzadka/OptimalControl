@@ -54,7 +54,9 @@ $\omega = \dot{\alpha} \in \mathbb{R}$ is an angular velocity
 
 3. Two link arm
 
+<p align="center">
 <img src="figures/two-link-arm.svg" width="50%" height="50%">
+</p>
 
 3a. Two link arm (position based - kinematic control)
 
