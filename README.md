@@ -1,5 +1,24 @@
 # Optimal Control
 
+### Available algorithms
+
+#### Linear–quadratic regulator [LQR](control_algorithms/linear_quadratic_regulator.py)
+
+Implementation of LQR allows to control with either linear and not linear systems.
+However, it guarantees the optimality only for the linear systems.
+For nonlinear dynamics, how close the resulting trajectory will be to the optimum depends mainly on how much the dynamics varies with the state of the system. Second important factor is how big is the error of linear dynamic approximation.
+
+What is also important, the linearization is given by Taylor expansion of dynamic at some state $x_0$ and with zero control $u_0 = 0$
+
+$$
+f(x, u) = f(x_0, 0) + \frac{\partial f}{\partial x}(x - x_0) + \frac{\partial f}{\partial u} u + o(\|x - x_0\| + \|u\|) 
+$$
+
+$$
+= f(x_0, 0) + A_f (x - x_0) + B_f u + o(\|x - x_0\| + \|u\|)
+$$
+
+If the dynamic of the system $f(x_0, 0)$ is not zero in $x_0$, we will have constant errors while aproximating $f(x, u)$.
 
 ### Models description
 
