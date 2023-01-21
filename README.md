@@ -27,6 +27,10 @@ $$
 
 2. Seeker
 
+<p align="center">
+<img src="figures/seeker.svg" width="50%" height="50%">
+</p>
+
 $$
 x = 
 \begin{bmatrix}
